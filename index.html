@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Task Calendar</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: #F4F6F8; }
+    #root { min-height: 100vh; }
+  </style>
+
+  <!-- ============================================================
+       STEP 1: paste your Supabase values between the quotes below.
+       Find them in Supabase: Project Settings -> API.
+         - Project URL  (looks like https://abcd1234.supabase.co)
+         - anon public key  (a long string; safe to put here)
+       Until you fill these in, the app still works on this device,
+       but cloud saving and sharing links are turned off.
+       ============================================================ -->
+  <script>
+    window.SUPABASE_URL = "https://yhxsfrnfbnubhpykjytp.supabase.co/rest/v1/";
+    window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeHNmcm5mYm51YmhweWtqeXRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjM3MzgsImV4cCI6MjA5NjUzOTczOH0.RcxfhqncvvzkUdayePb725BxqGQf_1HFw1HRuzu3qDA";
+  </script>
+
+  <!-- Local library shim: remembers your calendars (and their edit keys)
+       on this device using the browser's localStorage. Do not change. -->
+  <script>
+    (function () {
+      if (window.storage) return;
+      var LS; try { LS = window.localStorage; } catch (e) { LS = null; }
+      window.storage = {
+        get: function (k) { try { var v = LS && LS.getItem(k); return Promise.resolve(v == null ? null : { key: k, value: v, shared: false }); } catch (e) { return Promise.resolve(null); } },
+        set: function (k, v) { try { if (LS) LS.setItem(k, v); return Promise.resolve({ key: k, value: v, shared: false }); } catch (e) { return Promise.resolve(null); } },
+        delete: function (k) { try { if (LS) LS.removeItem(k); return Promise.resolve({ key: k, deleted: true }); } catch (e) { return Promise.resolve(null); } },
+        list: function (p) { try { var ks = []; if (LS) { for (var i = 0; i < LS.length; i++) { var kk = LS.key(i); if (!p || (kk && kk.indexOf(p) === 0)) ks.push(kk); } } return Promise.resolve({ keys: ks, prefix: p || "" }); } catch (e) { return Promise.resolve({ keys: [] }); } }
+      };
+    })();
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="app.js"></script>
+</body>
+</html>
